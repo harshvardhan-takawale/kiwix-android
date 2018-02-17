@@ -112,6 +112,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import me.toptas.fancyshowcase.OnViewInflateListener;
 import okhttp3.OkHttpClient;
@@ -162,6 +163,8 @@ import static org.kiwix.kiwixmobile.utils.StyleUtils.dialogStyle;
 public class KiwixMobileActivity extends BaseActivity implements WebViewCallback {
 
   private Activity activity;
+
+  private FancyShowCaseView mFancyShowCaseView;
 
   public static boolean isFullscreenOpened;
 
@@ -1149,7 +1152,6 @@ public class KiwixMobileActivity extends BaseActivity implements WebViewCallback
           i.putExtra(EXTRA_ZIM_FILE, zimFile);
           startActivityForResult(i, REQUEST_FILE_SEARCH);
           overridePendingTransition(0, 0);*/
-          welcome_note();
           return true;
         }
       });
@@ -1617,6 +1619,21 @@ public class KiwixMobileActivity extends BaseActivity implements WebViewCallback
       menu.findItem(R.id.menu_bookmarks).setVisible(false);
     }
 
+
+    new Handler().postDelayed(new Runnable() {
+      @Override
+      public void run() {
+        if (!isFinishing()) {
+          new FancyShowCaseQueue()
+                  .add(welcome_note())
+                  .add(bookmark_note())
+                  .add(simple_swipe_left())
+                  .add(simple_swipe_right())
+                  .show();
+        }
+      }
+    }, 500);
+
     return true;
   }
 
@@ -2018,55 +2035,59 @@ public class KiwixMobileActivity extends BaseActivity implements WebViewCallback
     }
   }
 
-  public void simple_swipe_left() {
-    new FancyShowCaseView.Builder(this)
+  public FancyShowCaseView simple_swipe_left() {
+   return new FancyShowCaseView.Builder(this)
+           .backgroundColor(Color.parseColor("#AA29B6F6"))
             .customView(R.layout.tutorial_custom_view, new OnViewInflateListener() {
               @Override
               public void onViewInflated(@NonNull View view) {
                 TextView textView = view.findViewById(R.id.tutorial_text);
                 textView.setText(R.string.Welcome_msg_1);
+                ImageView imageView = view.findViewById(R.id.image);
+                imageView.setImageResource(R.drawable.arrowleft);
               }
             })
-            .build()
-            .show();
+            .build();
+
   }
 
-  public void simple_swipe_right() {
-    new FancyShowCaseView.Builder(this)
+  public FancyShowCaseView simple_swipe_right() {
+   return new FancyShowCaseView.Builder(this)
+           .backgroundColor(Color.parseColor("#AA29B6F6"))
             .customView(R.layout.tutorial_custom_view, new OnViewInflateListener() {
               @Override
               public void onViewInflated(@NonNull View view) {
                 TextView textView = view.findViewById(R.id.tutorial_text);
-                textView.setText(R.string.Welcome_msg_1);
+                textView.setText(R.string.Welcome_msg_2);
+                ImageView imageView = view.findViewById(R.id.image);
+                imageView.setImageResource(R.drawable.arrowright);
               }
             })
-            .build()
-            .show();
+            .build();
+
   }
 
-  public void welcome_note(){
-    new FancyShowCaseView.Builder(activity)
+  public FancyShowCaseView welcome_note(){
+    return new FancyShowCaseView.Builder(activity)
             .focusOn(findViewById(R.id.menu_search))
-            .backgroundColor(Color.parseColor("#AAff0000"))
+            .fitSystemWindows(true)
+            .backgroundColor(Color.parseColor("#AA29B6F6"))
             .customView(R.layout.tutorial_custom_view, new OnViewInflateListener() {
               @Override
               public void onViewInflated(@NonNull View view) {
                 TextView textView = view.findViewById(R.id.tutorial_text);
                 textView.setText(R.string.Welcome);
-                Button button = view.findViewById(R.id.btn_action_1);
-                button.setText(R.string.next);
-                button.setOnClickListener(mClickListener);
               }
             })
-            .build()
-            .show();
+            .build();
 
   }
 
-  public void bookmark_note(){
-    new FancyShowCaseView.Builder(activity)
+  public FancyShowCaseView bookmark_note(){
+    return new FancyShowCaseView.Builder(activity)
             .focusOn(findViewById(R.id.menu_bookmarks))
-            .backgroundColor(Color.parseColor("#AAff0000"))
+            .fitSystemWindows(true)
+            .backgroundColor(Color.parseColor("#AA29B6F6"))
             .customView(R.layout.tutorial_custom_view, new OnViewInflateListener() {
               @Override
               public void onViewInflated(@NonNull View view) {
@@ -2074,18 +2095,13 @@ public class KiwixMobileActivity extends BaseActivity implements WebViewCallback
                 textView.setText(R.string.BookmarkText);
               }
             })
-            .build()
-            .show();
-    Toast.makeText(getApplicationContext(),"click",Toast.LENGTH_SHORT).show();
+            .build();
+
+
 
   }
 
-  View.OnClickListener mClickListener = new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-      bookmark_note();
-    }
-  };
+
 
 
 }
