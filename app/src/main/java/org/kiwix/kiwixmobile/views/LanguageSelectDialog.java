@@ -155,9 +155,9 @@ public class LanguageSelectDialog extends AlertDialog {
       LibraryAdapter.Language language = getItem(position);
       holder.language.setText(language.language);
       holder.languageLocalized.setText(context.getString(R.string.language_localized,
-              language.languageLocalized));
+          language.languageLocalized));
       holder.languageLocalized.setTypeface(Typeface.createFromAsset(context.getAssets(),
-              LanguageUtils.getTypeface(language.languageCode)));
+          LanguageUtils.getTypeface(language.languageCode)));
 
       if (languageCounts != null) {
         holder.languageEntriesCount.setText(context.getString(R.string.language_count,
