@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-We love improvements to our tools! There are a few key ways you can help us improve our projects:
+We love improvements to our tools! There are a few key ways you can help us improve our project:
 
 ### Submitting Feedback, Requests, and Bugs
 
